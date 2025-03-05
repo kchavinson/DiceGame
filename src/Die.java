@@ -3,8 +3,7 @@ import java.awt.*;
 
 public class Die
 {
-    /** Instance Variable **/
-    //holds number of sides
+    // Holds number of sides
     private int sides;
     private static int roll;
     private final Image[] eightDieImages;
@@ -16,10 +15,11 @@ public class Die
     private final int RECT_OFFSET_Y = 300;
     private final int DIE_HEIGHT = 100;
     private final int DIE_WITDH = 100;
-    /** Constructor **/
+
     // Creates new die
     public Die(DiceGameView frontend)
     {
+        // Declaring frontend object, number of sides on the die, and the image arrays
         this.frontend = frontend;
         sides = 0;
         this.sixDieImages = new Image[]{
@@ -43,7 +43,7 @@ public class Die
         };
     }
 
-    // Updates number of sides: makes sure that it is not less than 2
+    // Updates number of sides
     public void setSides(int numSides)
     {
         sides = numSides;
@@ -55,6 +55,7 @@ public class Die
     }
 
     // Returns a random int between 1 and the number of sides on the Die
+    // Also getters and setters for static variable
     public void roll()
     {
         roll = (int)(sides * Math.random() + 1);
@@ -63,19 +64,18 @@ public class Die
     {
         roll = x;
     }
-
     public static int getRoll() {
         return roll;
     }
 
-    /* Returns a string that gives the odds of
-     * you wining and how much money you could possibly win
-     */
+    // Returns a string that gives the odds of you wining and how much money you could possibly win
     public String toString()
     {
         return ("Great choice, your odds of winning are 1/" + sides + "\n"
                 + "This means that if you win you will " + sides + "x your money");
     }
+
+    // Prints die in a random location within the white box on the game screen
     public void draw(Graphics g)
     {
         if (sides == 8)

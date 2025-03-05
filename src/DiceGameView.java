@@ -3,6 +3,7 @@ import java.awt.*;
 
 public class DiceGameView extends JFrame {
 
+    // Declaring all instance variables
     private Image background;
     private Image winningBackground;
     private Image losingBackground;
@@ -20,10 +21,12 @@ public class DiceGameView extends JFrame {
 
     public DiceGameView(DiceGame backend) {
 
+        // Initializing background photos
         this.background = new ImageIcon("Resources/background.png").getImage();
         this.winningBackground = new ImageIcon("Resources/winningBackground.png").getImage();
         this.losingBackground = new ImageIcon("Resources/losingBackground.png").getImage();
 
+        // Creating backend object
         this.backend = backend;
 
 
@@ -36,6 +39,7 @@ public class DiceGameView extends JFrame {
 
     public void paint(Graphics g) {
 
+        // Rules Screen
         if (!backend.isGameStart()) {
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -49,14 +53,17 @@ public class DiceGameView extends JFrame {
             g.drawString("Get over $200 and you win, or you could lose it all... ", RULES_OFFSET, 5*RULES_OFFSET);
             g.drawString("Choose the die you want to begin", RULES_OFFSET, 6*RULES_OFFSET);
         }
+        // Loser's screen
         else if(backend.getPlayer1().getBalance() == 0 && backend.isGameOver())
         {
             g.drawImage(losingBackground, 0, 0, WINDOW_WIDTH,WINDOW_HEIGHT,this);
         }
+        // Winner's screen
         else if(backend.getPlayer1().getBalance() >= 200)
         {
             g.drawImage(winningBackground, 0, 0, WINDOW_WIDTH,WINDOW_HEIGHT,this);
         }
+        // Game Screen
         else
         {
             g.setColor(Color.WHITE);

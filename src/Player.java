@@ -26,42 +26,47 @@ public class Player {
         balance -= bet;
     }
 
-    // Called for user to make bet
+    // Called for user to make bet and makes sure they don't overdraw
     public double bet()
     {
-        System.out.println("How much money do you want to put down:");
-        bet = input.nextDouble();
-        input.nextLine();
+        while (this.noOverdraw())
+        {
+            System.out.println("How much money do you want to put down:");
+            bet = input.nextDouble();
+            input.nextLine();
+        }
         return bet;
     }
 
     // Makes sure that user can guess a number that is rolled
-    public boolean isImpossibleGuess(int sides)
+    public boolean isPossible(int sides)
     {
         if (guess > sides || guess <= 0)
         {
             System.out.println("You cannot guess that. You must guess a number that can be rolled!");
-            return true;
+            return false;
         }
         else
         {
-            return false;
+            return true;
         }
     }
 
     // Called in order to obtain the guess
-    public int guess()
+    public int guess(int sides)
     {
-        System.out.println("Whats your lucky number?");
-        guess = input.nextInt();
-        input.nextLine();
+        boolean isPossible = false;
+        while (!isPossible) {
+            System.out.println("Whats your lucky number?");
+            this.guess = input.nextInt();
+            input.nextLine();
+            isPossible = this.isPossible(sides);
+        }
         return guess;
     }
 
-    /* Function called to make sure that a user does not overdraw
-     * from their bank account or bet nothing
-     */
-    public boolean overdraw()
+    // Function called to make sure that a user does not overdraw from their bank account or bet nothing
+    public boolean noOverdraw()
     {
         if (bet > balance)
         {
@@ -88,7 +93,7 @@ public class Player {
         System.out.println("You just won $" + moneyWon);
     }
 
-    // Returns balance of player
+    // Getter's and Setters
     public double getBalance()
     {
         return balance;
@@ -105,15 +110,15 @@ public class Player {
     public double getBet() {
         return bet;
     }
+
+    // Resets two variables to signal new turn
     public void resetVariables()
     {
         bet = 0;
         guess = 0;
     }
 
-    /* Returns string that informs user of their balance
-     * then prompts them to keep playing
-     */
+    // Returns string that informs user of their balance then prompts them to keep playing
     public String toString()
     {
         return (name + " you currently have $" + balance + ". Lets continue!");

@@ -1,3 +1,8 @@
+// Kc Chavinson
+// This is a dice game called odds where you choose how mnay sides you want your die to be
+// This selection alters the odds you have of winning and your winning multiplier
+// You then bet money, if you get to $200 you win, if you lose it all, it's game over...
+
 import java.util.Scanner;
 public class DiceGame {
 
@@ -18,8 +23,6 @@ public class DiceGame {
     // Constructor that makes a dice game object
     public DiceGame()
     {
-
-
         // Prompts user for player name
         System.out.print("What is your name?: ");
         playerName = input.nextLine();
@@ -30,13 +33,12 @@ public class DiceGame {
         isBadGuess = false;
         player1 = new Player(playerName);
         numSides = 0;
+        this.window = new DiceGameView(this);
         d1 = new Die(window);
         gamble = 0;
         guessedNum = 0;
-        this.window = new DiceGameView(this);
         window.repaint();
     }
-
 
     // Holds the game
     public void play()
@@ -54,22 +56,21 @@ public class DiceGame {
             isGameStart = true;
             window.repaint();
 
-            //resets roll
+            // Resets roll and other associated variables to signal a new turn
             player1.resetVariables();
             Die.setRoll(0);
 
 
             // Asks for Bet and Updates window
             gamble = player1.bet();
-            this.overdrawPerchance();
             player1.withdrawl();
             window.repaint();
 
-            //
-            guessedNum = player1.guess();
-            this.needGuessAgain();
+            // Gets a guessed number from the user
+            guessedNum = player1.guess(numSides);
             window.repaint();
 
+            // Rolls the die
             d1.roll();
             this.printRoll();
             window.repaint();
@@ -82,7 +83,7 @@ public class DiceGame {
                 player1.win(numSides);
                 window.repaint();
 
-                // You win if you get more than 200 so game ends and you win!   
+                // You win if you get more than 200 so game ends and you win!
                 if (player1.getBalance() > 200)
                 {
                     this.youWon();
@@ -105,7 +106,7 @@ public class DiceGame {
         }
     }
 
-    // If you win, break the loop by setting isGameOver to true 
+    // If you win, break the loop by setting isGameOver to true
     public void youWon()
     {
         isGameOver = true;
@@ -113,9 +114,7 @@ public class DiceGame {
                 "win more money >:(");
     }
 
-    /* If you lose, break the loop by setting isGameOver to true
-     * and give final message
-     */
+    // If you lose, break the loop by setting isGameOver to true and give final message
     public void youLost()
     {
         isGameOver = true;
@@ -128,32 +127,7 @@ public class DiceGame {
         System.out.println("Your Guess: " + guessedNum + "\n" + "Dice Rolled: " + Die.getRoll());
     }
 
-    /* Makes sure the player did not overdraw
-     * prompts for a re inupt of gamble if they did overdraw
-     */
-    public void overdrawPerchance()
-    {
-        boolean didOverdraw = player1.overdraw();
-        while (didOverdraw)
-        {
-            gamble = player1.bet();
-            didOverdraw = player1.overdraw();
-        }
-    }
-
-    /* Ensures that player guessed a possible number
-     * if not, prompts user for another guess
-     */
-    // TODO Move this functionality into the guess() method in Player
-    public void needGuessAgain() {
-        isBadGuess = player1.isImpossibleGuess(numSides);
-        while (isBadGuess) {
-            guessedNum = player1.guess();
-            isBadGuess = player1.isImpossibleGuess(numSides);
-        }
-    }
-
-    // Prompts user for number of sides than updates 
+    // Prompts user for number of sides than updates
     public void newDie() {
         boolean isValidDie = false;
         while (!isValidDie) {
@@ -168,35 +142,27 @@ public class DiceGame {
         }
     }
 
-
+    // Getters for variables
     public boolean isGameStart() {
         return isGameStart;
     }
-
     public Player getPlayer1() {
         return player1;
     }
-
     public Die getD1() {
         return d1;
     }
-
     public boolean isGameOver() {
         return isGameOver;
     }
 
-
-
-    // Main function where all of the magic happens
+    // Main function where the game is run
     public static void main(String[] args)
     {
-
-
         // Creates dice game object
         DiceGame game1 = new DiceGame();
 
         // Runs through game
         game1.play();
-
     }
 }
